@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-// Mock shipment data
 const shipments = [
   {
     id: "SHP001",
@@ -19,7 +18,6 @@ const shipments = [
   },
 ];
 
-// GET /shipments
 router.get("/", (req, res) => {
   res.json(shipments);
 });
