@@ -15,4 +15,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ✅ NEW: Get shipment by ID
+// @route   GET /api/shipments/:id
+// @desc    Get a single shipment by its 'id' field (not _id)
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    const shipment = await Shipment.findOne({ id: req.params.id });
+    if (!shipment) {
+      return res.status(404).json({ error: "Shipment not found" });
+    }
+    res.status(200).json(shipment);
+  } catch (err) {
+    console.error("❌ Error fetching shipment by ID:", err.message);
+    res.status(500).json({ error: "Failed to fetch shipment" });
+  }
+});
+
 module.exports = router;
