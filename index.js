@@ -1,18 +1,28 @@
 const express = require("express");
+const cors = require("cors"); // <-- Import CORS
+const connectDB = require("./db");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(express.json()); // Needed to parse JSON
+// Enable CORS for all origins (you can restrict it later if needed)
+app.use(cors());
 
-// Import the /shipments route
+// For parsing JSON
+app.use(express.json());
+
+// Connect to MongoDB Atlas
+connectDB();
+
+// Routes
 const shipmentRoutes = require("./routes/shipments");
-app.use("/shipments", shipmentRoutes);
+app.use("/api/shipments", shipmentRoutes); // ✅ Add /api to route for clarity
 
-// Root route for sanity check
+// Root route
 app.get("/", (req, res) => {
   res.send("✅ TrackSmart backend is running!");
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

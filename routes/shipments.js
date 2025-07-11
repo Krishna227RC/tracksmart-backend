@@ -1,25 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const Shipment = require("../models/Shipment");
 
-const shipments = [
-  {
-    id: "SHP001",
-    origin: "Mumbai",
-    destination: "Delhi",
-    status: "In Transit",
-    eta: "2025-07-12T15:00:00Z",
-  },
-  {
-    id: "SHP002",
-    origin: "Bangalore",
-    destination: "Hyderabad",
-    status: "Delivered",
-    eta: "2025-07-08T11:30:00Z",
-  },
-];
-
-router.get("/", (req, res) => {
-  res.json(shipments);
+// GET all shipments
+router.get("/", async (req, res) => {
+  try {
+    const shipments = await Shipment.find();
+    res.json(shipments);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch shipments" });
+  }
 });
 
 module.exports = router;
