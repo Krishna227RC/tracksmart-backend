@@ -1,35 +1,52 @@
+// seed.js
 const mongoose = require("mongoose");
 const Shipment = require("./models/Shipment");
 
-const MONGO_URI = "mongodb+srv://admin:admin123@tracksmartcluster.xqwworz.mongodb.net/tracksmart?retryWrites=true&w=majority&appName=TrackSmartCluster";
-
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("Connected to MongoDB");
-  return Shipment.insertMany([
-    {
-      id: "SHP001",
-      origin: "Mumbai",
-      destination: "Delhi",
-      status: "In Transit",
-      eta: "2025-07-12T15:00:00Z",
-    },
-    {
-      id: "SHP002",
-      origin: "Bangalore",
-      destination: "Hyderabad",
-      status: "Delivered",
-      eta: "2025-07-08T11:30:00Z",
-    },
-  ]);
-})
-.then(() => {
-  console.log("✅ Sample data inserted");
-  mongoose.disconnect();
-})
-.catch((err) => {
-  console.error(err);
+// ✅ Final working MongoDB connection string
+mongoose.connect("mongodb+srv://admin:admin1234@tracksmartcluster.xqwworz.mongodb.net/?retryWrites=true&w=majority&appName=TrackSmartCluster", {
+  dbName: "tracksmart",
 });
+
+const shipments = [
+  {
+    id: "SHP001",
+    origin: "Mumbai",
+    originCoords: { lat: 19.076, lng: 72.8777 },
+    destination: "Delhi",
+    destinationCoords: { lat: 28.6139, lng: 77.2090 },
+    status: "In Transit",
+    eta: new Date("2025-07-12T15:00:00Z"),
+  },
+  {
+    id: "SHP002",
+    origin: "Bangalore",
+    originCoords: { lat: 12.9716, lng: 77.5946 },
+    destination: "Hyderabad",
+    destinationCoords: { lat: 17.385, lng: 78.4867 },
+    status: "Delivered",
+    eta: new Date("2025-07-08T11:30:00Z"),
+  },
+  {
+    id: "SHP123",
+    origin: "Hubli",
+    originCoords: { lat: 15.3647, lng: 75.124 },
+    destination: "Blr",
+    destinationCoords: { lat: 12.9716, lng: 77.5946 },
+    status: "In Transit",
+    eta: new Date("2025-07-20T10:00:00Z"),
+  },
+];
+
+async function seedData() {
+  try {
+    await Shipment.deleteMany({});
+    await Shipment.insertMany(shipments);
+    console.log("✅ Shipments inserted successfully");
+  } catch (err) {
+    console.error("❌ Error inserting shipments:", err.message);
+  } finally {
+    mongoose.connection.close();
+  }
+}
+
+seedData();
