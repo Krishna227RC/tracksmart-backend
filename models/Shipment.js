@@ -5,20 +5,34 @@ const shipmentSchema = new mongoose.Schema(
     id: {
       type: String,
       required: true,
-      unique: true, // To avoid duplicates
+      unique: true,
     },
     origin: {
       type: String,
       required: true,
     },
+    originCoords: {
+      type: {
+        lat: { type: Number },
+        lng: { type: Number },
+      },
+      required: false,
+    },
     destination: {
       type: String,
       required: true,
     },
+    destinationCoords: {
+      type: {
+        lat: { type: Number },
+        lng: { type: Number },
+      },
+      required: false,
+    },
     status: {
       type: String,
       required: true,
-      enum: ["Pending", "In Transit", "Delivered", "Cancelled"], // Optional but good practice
+      enum: ["Pending", "In Transit", "Delivered", "Cancelled"],
     },
     eta: {
       type: Date,
