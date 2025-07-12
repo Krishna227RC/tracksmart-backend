@@ -15,10 +15,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ NEW: Get shipment by ID
-// @route   GET /api/shipments/:id
-// @desc    Get a single shipment by its 'id' field (not _id)
-// @access  Public
+// ✅ NEW: Get shipment by ID (custom field 'id')
 router.get("/:id", async (req, res) => {
   try {
     const shipment = await Shipment.findOne({ id: req.params.id });
